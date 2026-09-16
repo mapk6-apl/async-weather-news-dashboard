@@ -55,5 +55,8 @@ getWeatherCallback((weatherError, weatherData) => {
             return;
         }
         const news = JSON.parse(newsData!);
+        news.articles.forEach((article: any) => {
+            console.log(`-${article.title}`);
+        })
     })
 })
