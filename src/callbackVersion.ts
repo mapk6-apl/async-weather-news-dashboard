@@ -1,4 +1,4 @@
-import http from 'http'
+import https from 'https'
 
 const weatherKey = process.env.OPENWEATHER_API_KEY;
 const newsKey = process.env.GNEWS_API_KEY;
@@ -7,7 +7,7 @@ const city = 'Polokwane';
 function getWeatherCallback(callback: (error: Error | null, data?: string) => void): void{
      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${weatherKey}&units=metric`
     
-     http.get(url, (res) => {
+     https.get(url, (res) => {
         let data = '';
 
         res.on('data', (chunk) => {
@@ -26,7 +26,7 @@ function getWeatherCallback(callback: (error: Error | null, data?: string) => vo
 function getNewsCallback(callback: (error: Error | null, data?: string) => void): void {
     const url = `https://gnews.io/api/v4/top-headlines?token=${newsKey}&lang=en&max=5`;
 
-    http.get(url, (res) => {
+    https.get(url, (res) => {
         let data = '';
 
         res.on('data', (chunk) => {
