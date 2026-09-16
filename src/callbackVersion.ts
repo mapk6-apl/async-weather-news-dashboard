@@ -49,4 +49,11 @@ getWeatherCallback((weatherError, weatherData) => {
     const weather = JSON.parse(weatherData!);
     console.log(`Weather in ${weather.name}: ${weather.main.temp}°C`)
 
+    getNewsCallback((newsError, newsData) => { //nesting news callback inside weather callback
+        if(newsError){
+            console.log('Error fetching news', newsError.message)
+            return;
+        }
+        const news = JSON.parse(newsData!);
+    })
 })
