@@ -46,7 +46,7 @@ getWeatherCallback((weatherError, weatherData) => {
         console.log('Error fetching weather', weatherError.message)
         return;
     }
-
     const weather = JSON.parse(weatherData!);
-    console.log(`Weather in ${weather.name}`)
+    console.log(`Weather in ${weather.name}: ${weather.main.temp}°C`)
+
 })
