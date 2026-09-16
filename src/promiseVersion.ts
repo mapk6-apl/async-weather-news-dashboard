@@ -16,10 +16,10 @@ function getWeatherPromise(): Promise<string>{
             });
 
             res.on('end', () => {
-                resolve(data);
+                resolve(data); //resolve promise with full body response
             });
         }).on('error', (err) => {
-            reject(err);
+            reject(err); //promise rejected
         })
     })
 }
@@ -43,23 +43,24 @@ function getNewsPromise(): Promise<string>{
         })
 
         getWeatherPromise()
-        .then((weatherData) => {
+        .then((weatherData) => { //this is the resolved value from getWeatherPromise()
             const weather = JSON.parse(weatherData);
             console.log(`Weather in ${weather.name}: ${weather.main.temp}°C`)
-            return getNewsPromise();
+            return getNewsPromise(); //the next .then() waits for this promise
         })
-        .then((newsData) => {
+        .then((newsData) => { //runs only after getNewsPromise() resolves (cause of the return statement above)
             const news = JSON.parse(newsData);
             news.articles.forEach((article: any) => {
                 console.log(`-${article.title}`)
             });
         })
-        .catch((error) => {
+        .catch((error) => { //catches a rejection from either promise
             console.error('Something went wrong:', error.message);
         })
     })
 }
 
+//this will start both requests at the same time and only runs .then() once both have resolved
 Promise.all([getWeatherPromise(), getNewsPromise()])
 .then(([weatherData, newsData]) => {
     const weather = JSON.parse(weatherData);
@@ -71,3 +72,12 @@ Promise.all([getWeatherPromise(), getNewsPromise()])
 .catch((error) => {
     console.error('Something went wrong:', error.message);
 });
+
+//this starts both at the same time, but cares for the one that resolves or rejects first ; the other one is ignored
+Promise.race([getWeatherPromise(), getNewsPromise()])
+.then((fastestData) => {
+    console.log('Fastest response arrived:', fastestData.slice(0, 100));
+})
+.catch((error) => {
+    console.error('Something went wrong:', error.message);
+})
