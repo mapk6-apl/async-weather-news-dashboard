@@ -21,5 +21,22 @@ function getWeatherCallback(callback: (error: Error | null, data?: string) => vo
         callback(err) //we get an error and not the data
      });
         
-    }
+}
 
+function getNewsCallback(callback: (error: Error | null, data?: string) => void): void {
+    const url = `https://gnews.io/api/v4/top-headlines?token=${newsKey}&lang=en&max=5`;
+
+    http.get(url, (res) => {
+        let data = '';
+
+        res.on('data', (chunk) => {
+            data += chunk;
+        })
+
+        res.on('end', () => {
+            callback(null, data) //we get the data and not the error
+        });
+     }).on('error', (err) => {
+        callback(err) //we get an error and not the data
+     });
+}
