@@ -1,8 +1,8 @@
 import http from 'http'
 
-const weatherKey = "e9be1674cd1ebd4f592392692d6b511b"
-const newsKey = "4c880453c1759d5a3769f5cedd180a82"
-const city = 'Polokwane'
+const weatherKey = process.env.OPENWEATHER_API_KEY;
+const newsKey = process.env.GNEWS_API_KEY;
+const city = 'Polokwane';
 
 function getWeatherCallback(callback: (error: Error | null, data?: string) => void): void{
      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${weatherKey}&units=metric`
@@ -40,3 +40,13 @@ function getNewsCallback(callback: (error: Error | null, data?: string) => void)
         callback(err) //we get an error and not the data
      });
 }
+
+getWeatherCallback((weatherError, weatherData) => {
+    if (weatherError) { //if we get a weather error
+        console.log('Error fetching weather', weatherError.message)
+        return;
+    }
+
+    const weather = JSON.parse(weatherData!);
+    console.log(`Weather in ${weather.name}`)
+})
