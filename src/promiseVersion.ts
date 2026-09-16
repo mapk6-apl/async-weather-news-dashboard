@@ -41,5 +41,21 @@ function getNewsPromise(): Promise<string>{
                 reject(err);
             })
         })
+
+        getWeatherPromise()
+        .then((weatherData) => {
+            const weather = JSON.parse(weatherData);
+            console.log(`Weather in ${weather.name}: ${weather.main.temp}°C`)
+            return getNewsPromise();
+        })
+        .then((newsData) => {
+            const news = JSON.parse(newsData);
+            news.articles.forEach((article: any) => {
+                console.log(`-${article.title}`)
+            });
+        })
+        .catch((error) => {
+            console.error('Something went wrong:', error.message);
+        })
     })
 }
