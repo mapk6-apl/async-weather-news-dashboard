@@ -59,3 +59,15 @@ function getNewsPromise(): Promise<string>{
         })
     })
 }
+
+Promise.all([getWeatherPromise(), getNewsPromise()])
+.then(([weatherData, newsData]) => {
+    const weather = JSON.parse(weatherData);
+    const news = JSON.parse(newsData);
+    console.log(`Weather in ${weather.name}: ${weather.main.temp}°C`)
+    news.articles.forEach((article: any) => 
+        console.log(`-${article.title}`));
+})
+.catch((error) => {
+    console.error('Something went wrong:', error.message);
+});
