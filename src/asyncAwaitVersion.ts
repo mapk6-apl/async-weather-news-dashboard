@@ -61,7 +61,7 @@ async function runSequential() {
     }
 }
 
-runSequential(); //calling the function
+//runSequential(); //calling the function
 
 
 //Promise.all starts both requests at the same time; await pauses until both have resolved; results come as an array
@@ -80,7 +80,7 @@ async function runAll() {
     }
 }
 
-runAll();
+//runAll();
 
 //both still start at the same time, but function only waits for whichever settles first
 async function runRace() {
@@ -92,4 +92,11 @@ async function runRace() {
     }
 }
 
-runRace();
+//runRace();
+
+//calling all 3 functions one after another
+async function main() {
+    await runSequential(); //waits for this to finish before moving to the next below
+    await runAll(); 
+    await runRace(); 
+}
