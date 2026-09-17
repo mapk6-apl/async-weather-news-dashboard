@@ -60,3 +60,24 @@ async function runSequential() {
         console.error('Something went wrong:', error.message);
     }
 }
+
+runSequential(); //calling the function
+
+
+//Promise.all starts both requests at the same time; await pauses until both have resolved
+async function runAll() {
+    try {
+        const [weatherData, newsData] = await Promise.all([getWeatherPromise(), getNewsPromise()]);
+
+        const weather = JSON.parse(weatherData);
+        const news = JSON.parse(newsData);
+        console.log((`Weather in ${weather.name}: ${weather.main.temp}°C`));
+        news.article.forEach((article: any) => {
+            console.log(`- ${article.title}`);
+        });
+    } catch (error: any) {
+        console.error('Something went wrong:', error.message);
+    }
+}
+
+runAll();
