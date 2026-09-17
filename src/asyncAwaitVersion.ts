@@ -64,7 +64,7 @@ async function runSequential() {
 runSequential(); //calling the function
 
 
-//Promise.all starts both requests at the same time; await pauses until both have resolved
+//Promise.all starts both requests at the same time; await pauses until both have resolved; results come as an array
 async function runAll() {
     try {
         const [weatherData, newsData] = await Promise.all([getWeatherPromise(), getNewsPromise()]);
@@ -81,3 +81,15 @@ async function runAll() {
 }
 
 runAll();
+
+//both still start at the same time, but function only waits for whichever settles first
+async function runRace() {
+    try {
+        const fastestData = await Promise.race([getWeatherPromise(), getNewsPromise()]);
+        console.log('Fastest response arrived:', fastestData.slice(0, 100));
+    } catch (error: any) {
+        console.error('Something went wrong:', error.message);
+    }
+}
+
+runRace();
