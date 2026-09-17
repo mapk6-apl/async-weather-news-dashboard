@@ -43,3 +43,20 @@ function getNewsPromise(): Promise<string>{
         });
     })
 }
+
+async function runSequential() {
+    try {
+        const weatherData = await getWeatherPromise(); //function pauses (await) until getWeatherPromise() resolves
+        const weather = JSON.parse(weatherData); //results are unwrapped into weatherData
+        console.log(`Weather in ${weather.name}: ${weather.main.temp}°C`)
+
+        //this will execute once the above finishes
+        const newsData = await getNewsPromise();
+        const news = JSON.parse(newsData);
+        news.article.forEach((article: any) => {
+            console.log(`- ${article.title}`);
+        });
+    } catch (error: any) { //we catch a rejection from either await above
+        console.error('Something went wrong:', error.message);
+    }
+}
